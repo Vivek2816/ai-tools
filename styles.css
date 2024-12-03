@@ -1,0 +1,113 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('background.webp'); /* Replace 'background.webp' with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Light background behind text */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin: 0;
+}
+
+.nav-button, .action-button {
+    padding: 12px 24px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(74, 144, 226, 0.9); /* Semi-transparent button color */
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.nav-button:hover, .action-button:hover {
+    background-color: rgba(53, 122, 189, 0.9);
+    transform: scale(1.05);
+}
+
+textarea, input[type="text"] {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Main Content Container */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Card Styles */
+.card {
+    width: 200px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(74, 144, 226, 0.9); /* Semi-transparent card color */
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color: rgba(53, 122, 189, 0.9);
+    transform: scale(1.05);
+}
+
+/* Output Box for Product Review */
+.output-box {
+    margin-top: 20px;
+    padding: 25px;
+    border: 2px solid rgba(74, 144, 226, 0.9);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 100%;
+    max-width: 500px;
+    font-size: 1.3em;
+    color: #333;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}

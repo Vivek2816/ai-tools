@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Speech to Text</h1>
+        <button onclick="window.location.href='index.html'" class="nav-button">Back to Main</button>
+    </header>
+    <main>
+        <button id="recordBtn" class="action-button" onclick="startRecording()">Start Recording</button>
+        <textarea id="outputText" rows="4" cols="50" placeholder="Transcribed text will appear here..." readonly></textarea>
+    </main>
+
+    <script>
+        // Check if browser supports the Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false; // Set to true if you want continuous recognition
+            recognition.lang = 'en-US'; // Set language
+            recognition.interimResults = false; // Set to true for interim results
+
+            recognition.onstart = function() {
+                document.getElementById("recordBtn").innerText = "Recording...";
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById("outputText").value = transcript;
+                document.getElementById("recordBtn").innerText = "Start Recording";
+            };
+
+            recognition.onspeechend = function() {
+                recognition.stop();
+                document.getElementById("recordBtn").innerText = "Start Recording";
+            };
+
+            recognition.onerror = function(event) {
+                alert("Error occurred in speech recognition: " + event.error);
+                document.getElementById("recordBtn").innerText = "Start Recording";
+            };
+        } else {
+            alert("Your browser does not support Speech Recognition.");
+        }
+
+        function startRecording() {
+            if (recognition) {
+                recognition.start();
+            } else {
+                alert("Speech Recognition is not supported in this browser.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Review Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Product Review Analyzer</h1>
+        <button onclick="window.location.href='index.html'" class="nav-button">Back to Main</button>
+    </header>
+    <main>
+        <div>
+            <button id="startRecordingBtn" class="action-button">Start Recording</button>
+            <button id="stopRecordingBtn" class="action-button" disabled>Stop Recording</button>
+        </div>
+        <div class="output-box" id="reviewOutput">Overall review will appear here...</div>
+    </main>
+
+    <script>
+        // Sentiment keyword arrays
+        const positiveKeywords = ["excellent", "amazing", "fantastic", "wonderful", "incredible", "superb", "impressive", "reliable", "effective", "high-quality", "satisfied", "love", "perfect", "great value", "highly recommend", "user-friendly", "top-notch", "exceeded expectations", "outstanding", "flawless", "efficient", "best"];
+        const negativeKeywords = ["terrible", "horrible", "poor", "awful", "unreliable", "disappointed", "waste of money", "overpriced", "not worth it", "doesn’t work", "frustrating", "defective", "lousy", "worst", "issues", "broke", "fail", "disgusting", "annoying", "hard to use", "cheaply made"];
+        const neutralKeywords = ["average", "okay", "fair", "moderate", "decent", "satisfactory", "meets expectations", "ordinary", "acceptable", "reasonable", "fine", "basic", "neither good nor bad", "as expected", "unremarkable"];
+
+        let recognition;
+        let finalTranscript = '';
+
+        // Start speech recognition
+        document.getElementById('startRecordingBtn').onclick = () => {
+            finalTranscript = '';
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = true;
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                document.getElementById('reviewOutput').textContent = interimTranscript || finalTranscript;
+            };
+
+            recognition.onend = () => {
+                analyzeSentiment(finalTranscript);
+                document.getElementById('stopRecordingBtn').disabled = true;
+                document.getElementById('startRecordingBtn').disabled = false;
+            };
+
+            recognition.start();
+            document.getElementById('stopRecordingBtn').disabled = false;
+            document.getElementById('startRecordingBtn').disabled = true;
+        };
+
+        // Stop speech recognition
+        document.getElementById('stopRecordingBtn').onclick = () => {
+            if (recognition) {
+                recognition.stop();
+            }
+        };
+
+        // Sentiment analysis function
+        function analyzeSentiment(text) {
+            const lowerText = text.toLowerCase();
+            let positiveCount = 0;
+            let negativeCount = 0;
+            let neutralCount = 0;
+
+            positiveKeywords.forEach(keyword => {
+                if (lowerText.includes(keyword)) positiveCount++;
+            });
+            negativeKeywords.forEach(keyword => {
+                if (lowerText.includes(keyword)) negativeCount++;
+            });
+            neutralKeywords.forEach(keyword => {
+                if (lowerText.includes(keyword)) neutralCount++;
+            });
+
+            let result;
+            if (positiveCount > negativeCount && positiveCount > neutralCount) {
+                result = "Positive";
+            } else if (negativeCount > positiveCount && negativeCount > neutralCount) {
+                result = "Negative";
+            } else if (neutralCount >= positiveCount && neutralCount >= negativeCount) {
+                result = "Neutral";
+            } else {
+                result = "Neutral"; // Default to Neutral if counts are equal or unclear
+            }
+
+            document.getElementById('reviewOutput').textContent = `Overall review: ${result}`;
+        }
+    </script>
+</body>
+</html>
